@@ -103,7 +103,7 @@ DATABASE_URL
 
 Example local format:
 
-DATABASE_URL=postgresql://postgres:<PASSWORD>@localhost:5432/user_management?schema=public
+DATABASE_URL=postgresql://postgres:<PASSWORD>@localhost:5433/user_management?schema=public
 
 
 8.Database Migration
