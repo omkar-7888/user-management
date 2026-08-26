@@ -11,8 +11,8 @@ jobs:
   backend-build:
     runs-on: ubuntu-latest
     strategy:
-    matrix:
-      node: [26]
+      matrix:
+        node: [26]
 
     name: Node ${{ matrix.node }} sample
     steps:
