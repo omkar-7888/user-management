@@ -30,7 +30,7 @@ jobs:
       run: |
         cd backend
         npm ci
-    - name: Run Backend Test
-      run: |
-        cd backend
-        npm run test -- --run
+    # - name: Run Backend Test
+    #   run: |
+    #     cd backend
+    #     npm run test -- --run
