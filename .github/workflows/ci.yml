@@ -61,6 +61,7 @@ jobs:
       run: |
         cd frontend
         npm run lint --if-present
+        
     # - name: Run Backend Test
     #   run: |
     #     cd backend
