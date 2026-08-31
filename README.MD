@@ -47,12 +47,19 @@ Database:
 Local URLs:
 
 Frontend:
+npm install
+npm run dev
 
 http://localhost:5173
 
 Backend:
+npm install
+npm run prisma:generate
+npm run prisma:migrate
+npm run prisma:seed
+npm run dev
 
-http://localhost:5000
+Backend server running at > http://localhost:5000
 
 Backend API:
 
