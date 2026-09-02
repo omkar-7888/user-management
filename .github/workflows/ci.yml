@@ -1,68 +1,68 @@
-name: CI Workflow
+# name: CI Workflow
 
-on:
-  push:
-    branches: [main, feature/*]
+# on:
+#   push:
+#     branches: [main, feature/*]
   
-  pull_request:
-    branches: [main]
+#   pull_request:
+#     branches: [main]
 
-jobs:
-  backend-build:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node: [26]
+# jobs:
+#   backend-build:
+#     runs-on: ubuntu-latest
+#     strategy:
+#       matrix:
+#         node: [26]
 
-    name: Node ${{ matrix.node }} sample
-    steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v4
+#     name: Node ${{ matrix.node }} sample
+#     steps:
+#     - name: Checkout Repository
+#       uses: actions/checkout@v4
 
-    - name: Setup Node JS Env
-      uses: actions/setup-node@v4
-      with:
-        node-version: ${{ matrix.node }}
-        cache: 'npm'
-        cache-dependency-path: package-lock.json
+#     - name: Setup Node JS Env
+#       uses: actions/setup-node@v4
+#       with:
+#         node-version: ${{ matrix.node }}
+#         cache: 'npm'
+#         cache-dependency-path: package-lock.json
 
-    - name: Install Backend Dependancies
-      run: |
-        cd backend
-        npm ci
-    # - name: Run Backend Test
-    #   run: |
-    #     cd backend
-    #     npm run test -- --run
+#     - name: Install Backend Dependancies
+#       run: |
+#         cd backend
+#         npm ci
+#     # - name: Run Backend Test
+#     #   run: |
+#     #     cd backend
+#     #     npm run test -- --run
 
-  frontend-build:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node: [26]
+#   frontend-build:
+#     runs-on: ubuntu-latest
+#     strategy:
+#       matrix:
+#         node: [26]
 
-    name: Node ${{ matrix.node }} sample
-    steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v4
+#     name: Node ${{ matrix.node }} sample
+#     steps:
+#     - name: Checkout Repository
+#       uses: actions/checkout@v4
 
-    - name: Setup Node JS Env
-      uses: actions/setup-node@v4
-      with:
-        node-version: ${{ matrix.node }}
-        cache: 'npm'
-        cache-dependency-path: package-lock.json
+#     - name: Setup Node JS Env
+#       uses: actions/setup-node@v4
+#       with:
+#         node-version: ${{ matrix.node }}
+#         cache: 'npm'
+#         cache-dependency-path: package-lock.json
 
-    - name: Install Frontend Dependancies
-      run: |
-        cd frontend
-        npm ci
-    - name: Code Linting
-      run: |
-        cd frontend
-        npm run lint --if-present
+#     - name: Install Frontend Dependancies
+#       run: |
+#         cd frontend
+#         npm ci
+#     - name: Code Linting
+#       run: |
+#         cd frontend
+#         npm run lint --if-present
         
-    # - name: Run Backend Test
-    #   run: |
-    #     cd backend
-    #     npm run test -- --run
+#     # - name: Run Backend Test
+#     #   run: |
+#     #     cd backend
+#     #     npm run test -- --run
