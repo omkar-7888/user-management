@@ -2,10 +2,12 @@ name: CI Workflow
 
 on:
   push:
-    branches: [main, feature/*]
-  
+    branches: [featur/*]
+    #branches: [main, feature/*]
+
   pull_request:
-    branches: [main]
+    branches: [featur/*]
+    #branches: [main]
 
 jobs:
   backend-build:
