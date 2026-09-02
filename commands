@@ -1,0 +1,2 @@
+#Docker Image Build - docker build -t userm-frontend .
+#Docker Image to Docker Run - docker run -d -p 8080:5173 -e VITE_API_URL="http://44.246.190.170:5000" --name my-frontend userm-frontend:latest npm run dev -- --host
