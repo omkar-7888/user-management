@@ -1,10 +1,12 @@
 # Dependencies
 node_modules/
+commands
 
 # Environment files
 .env
 .env.*
 !.env.example
+
 
 # Build output
 dist/
