@@ -1,5 +1,5 @@
 #using base image as node:20
-FROM node:20
+FROM node:20-alpine As builder
 
 #setting working directory as /app
 WORKDIR /app
@@ -15,10 +15,17 @@ COPY . .
 
 #build the app
 RUN npm run build
+#++++++++++++++++++++++++++
+#STAGE 2: Serve the Static Files
+#++++++++++++++++++++++++++
+FROM node:20-alpine
 
-#exposing the app on port 5173
+WORKDIR /app
+
+RUN npm install -g vite@8 && npm cache clean --force
+
+# Copy the compiled production assets from the builder stage
+COPY --from=builder /app/dist ./dist
 EXPOSE 5173
 
-#running the app
-CMD ["npm","run","dev"]
-
+CMD ["vite", "preview", "--host", "0.0.0.0", "--port", "5173"]

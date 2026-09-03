@@ -21,7 +21,7 @@ export function UserTable({
     );
   }
 
-  if (users.length === 0) {
+  if (users?.length === 0) {
     return (
       <div className="status-message">
         No users found.
@@ -44,7 +44,7 @@ export function UserTable({
         </thead>
 
         <tbody>
-          {users.map((user) => (
+          {users?.map((user) => (
             <tr key={user.id}>
               <td>{user.id}</td>
               <td>{user.name}</td>
