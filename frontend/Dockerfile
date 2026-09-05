@@ -13,6 +13,8 @@ RUN npm install
 #copy all the application files in working directory
 COPY . .
 
+ARG VITE_API_URL
+ENV VITE_API_URL=$VITE_API_URL
 #build the app
 RUN npm run build
 #++++++++++++++++++++++++++
@@ -21,9 +23,6 @@ RUN npm run build
 FROM node:20-alpine
 
 WORKDIR /app
-
-ARG VITE_API_URL
-ENV VITE_API_URL=$VITE_API_URL
 
 RUN npm install -g vite@8 && npm cache clean --force
 
