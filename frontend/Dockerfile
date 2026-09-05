@@ -22,6 +22,9 @@ FROM node:20-alpine
 
 WORKDIR /app
 
+ARG VITE_API_URL
+ENV VITE_API_URL=$VITE_API_URL
+
 RUN npm install -g vite@8 && npm cache clean --force
 
 # Copy the compiled production assets from the builder stage

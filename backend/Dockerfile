@@ -41,6 +41,7 @@ USER node
 COPY --from=builder /app/package*.json ./
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/prisma ./prisma
+COPY --from=builder /app/prisma.config.ts ./prisma.config.ts
 
 #Copy  you compiled javascript backend code from the builder stage
 COPY --from=builder /app/dist ./dist
@@ -50,4 +51,4 @@ EXPOSE 5000
 # Startup Command:
 # 1. Runs any pending production migrations safely using 'migrate deploy'
 # 2. Starts your compiled ES Module application via 'node dist/server.js'
-CMD ["sh", "-c", "npx prisma migrate deploy && node dist/server.js"]
+CMD ["sh", "-c", "npx prisma migrate deploy && node dist/src/server.js"]
