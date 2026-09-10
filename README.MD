@@ -121,7 +121,9 @@ backend/prisma/schema.prisma
 
 -Development migration:
 
-npx prisma migrate dev
+npx prisma migrate dev - Local
+Safely apply existing migrations to the database Conatiner(Non-interactive)
+npx prisma migrate deploy
 
 
 -Generate Prisma client:
