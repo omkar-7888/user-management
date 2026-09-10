@@ -34,7 +34,7 @@ export const getSingleUser = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  const id = parseId(req.params.id);
+  const id = parseId(req.params.id as string);
 
   const user = await getUserById(id);
 
@@ -60,7 +60,7 @@ export const updateExistingUser = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  const id = parseId(req.params.id);
+  const id = parseId(req.params.id as string);
 
   const user = await updateUser(id, req.body);
 
@@ -74,7 +74,7 @@ export const deleteExistingUser = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  const id = parseId(req.params.id);
+  const id = parseId(req.params.id as string);
 
   await deleteUser(id);
 
