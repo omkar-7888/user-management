@@ -31,9 +31,9 @@ Backend:
 
 Database:
 
-- PostgreSQL 17.x
+- PostgreSQL 16.x
 
-- user_management
+- user-management
 ---
 
 # 4. Application Ports
@@ -71,8 +71,8 @@ http://localhost:5000/api
 # 5. Health Endpoint
 
 Health Check:
-
 GET /api/health
+Note: The database container relies on the pg_isready binary check inside Docker Compose, while this application endpoint monitors overall service layer health.
 
 Full URL:
 
@@ -110,9 +110,6 @@ DATABASE_URL
 
 Example local format:
 
-DATABASE_URL=postgresql://postgres:<PASSWORD>@localhost:5433/user_management?schema=public
-
-
 8.Database Migration
 
 Database uses Prisma ORM.
@@ -124,7 +121,9 @@ backend/prisma/schema.prisma
 
 -Development migration:
 
-npx prisma migrate dev
+npx prisma migrate dev - Local
+Safely apply existing migrations to the database Conatiner(Non-interactive)
+npx prisma migrate deploy
 
 
 -Generate Prisma client:
