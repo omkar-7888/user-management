@@ -2,6 +2,7 @@ services:
 
   postgres:
     image: postgres:16-alpine
+    user: "postgres"
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
@@ -43,6 +44,8 @@ services:
       dockerfile: Dockerfile
       args:
         - VITE_API_URL=${VITE_API_URL}
+    user: "node"
+
     container_name: userm_frontend
     restart: always
 
