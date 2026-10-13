@@ -1,68 +1,112 @@
-# name: CI Workflow
 
-# on:
-#   push:
-#     branches: [main, feature/*]
-  
-#   pull_request:
-#     branches: [main]
+name: User Management CI
 
-# jobs:
-#   backend-build:
-#     runs-on: ubuntu-latest
-#     strategy:
-#       matrix:
-#         node: [26]
+on:
+  push:
+    branches:
+      - main
+      - 'feature/**'
+  pull_request:
+    branches:
+      - main
 
-#     name: Node ${{ matrix.node }} sample
-#     steps:
-#     - name: Checkout Repository
-#       uses: actions/checkout@v4
+permissions:
+  contents: read
 
-#     - name: Setup Node JS Env
-#       uses: actions/setup-node@v4
-#       with:
-#         node-version: ${{ matrix.node }}
-#         cache: 'npm'
-#         cache-dependency-path: package-lock.json
+jobs:
+  ci-check:
+    runs-on: ubuntu-latest
 
-#     - name: Install Backend Dependancies
-#       run: |
-#         cd backend
-#         npm ci
-#     # - name: Run Backend Test
-#     #   run: |
-#     #     cd backend
-#     #     npm run test -- --run
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-#   frontend-build:
-#     runs-on: ubuntu-latest
-#     strategy:
-#       matrix:
-#         node: [26]
+      - name: Verify runner
+        run: echo "GitHub Actions runner is working"
 
-#     name: Node ${{ matrix.node }} sample
-#     steps:
-#     - name: Checkout Repository
-#       uses: actions/checkout@v4
+  frontend-build:
+    name: Frontend - Test and Build
+    runs-on: ubuntu-latest
 
-#     - name: Setup Node JS Env
-#       uses: actions/setup-node@v4
-#       with:
-#         node-version: ${{ matrix.node }}
-#         cache: 'npm'
-#         cache-dependency-path: package-lock.json
+    defaults:
+      run:
+        working-directory: frontend
 
-#     - name: Install Frontend Dependancies
-#       run: |
-#         cd frontend
-#         npm ci
-#     - name: Code Linting
-#       run: |
-#         cd frontend
-#         npm run lint --if-present
-        
-#     # - name: Run Backend Test
-#     #   run: |
-#     #     cd backend
-#     #     npm run test -- --run
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run frontend tests
+        run: npm run test:run
+
+      - name: Build frontend
+        run: npm run build
+
+  backend-build:
+    name: Backend - Test and Build
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: backend
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: user_management_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres -d user_management_test"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    env:
+      NODE_ENV: test
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/user_management_test
+      DATABASE_URL_TEST: postgresql://postgres:postgres@localhost:5432/user_management_test
+      CORS_ORIGIN: http://localhost:5173
+      PORT: 5001
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: backend/package-lock.json
+
+      - name: Verify Node.js version
+        run: node --version
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Generate Prisma Client
+        run: npm run prisma:generate
+
+      - name: Apply database migrations
+        run: npx prisma migrate deploy
+
+      - name: Run backend tests
+        run: npm run test:run
+
+      - name: Build backend
+        run: npm run build
