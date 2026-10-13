@@ -23,6 +23,9 @@ jobs:
 
       - name: Verify runner
         run: echo "GitHub Actions runner is working"
+        
+      - name: Simulate CI failure
+        run: exit 1
 
   frontend-build:
     name: Frontend - Test and Build
