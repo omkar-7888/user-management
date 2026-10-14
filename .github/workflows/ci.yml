@@ -124,12 +124,14 @@ jobs:
         run: docker build -t user-management-frontend:ci ./frontend
 
       - name: Scan frontend Docker image with Trivy
-        uses: aquasecurity/trivy-action@v0.33.1
-        with:
-          image-ref: user-management-frontend:ci
-          format: table
-          severity: HIGH,CRITICAL
-          exit-code: '0'
+        run: |
+          docker run --rm \
+            -v /var/run/docker.sock:/var/run/docker.sock \
+            aquasec/trivy:0.65.0 image \
+            --severity HIGH,CRITICAL \
+            --exit-code 0 \
+            --format table \
+            user-management-frontend:ci
 
   docker-backend:
     name: Docker - Backend Build
