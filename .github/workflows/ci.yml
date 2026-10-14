@@ -124,7 +124,7 @@ jobs:
         run: docker build -t user-management-frontend:ci ./frontend
 
       - name: Scan frontend Docker image with Trivy
-        uses: aquasecurity/trivy-action@0.33.1
+        uses: aquasecurity/trivy-action@v0.33.1
         with:
           image-ref: user-management-frontend:ci
           format: table
@@ -135,7 +135,7 @@ jobs:
     name: Docker - Backend Build
     runs-on: ubuntu-latest
     needs: [backend-build]
-    
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -144,7 +144,7 @@ jobs:
         run: docker build -t user-management-backend:ci ./backend
       
       - name: Scan backend Docker image with Trivy
-        uses: aquasecurity/trivy-action@0.33.1
+        uses: aquasecurity/trivy-action@v0.33.1
         with:
           image-ref: user-management-backend:ci
           format: table
