@@ -121,7 +121,15 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Build frontend Docker image
-        run: docker build -t user-management-frontend:ci ./frontend  
+        run: docker build -t user-management-frontend:ci ./frontend
+
+      - name: Scan frontend Docker image with Trivy
+        uses: aquasecurity/trivy-action@0.33.1
+        with:
+          image-ref: user-management-frontend:ci
+          format: table
+          severity: HIGH,CRITICAL
+          exit-code: '0'
 
   docker-backend:
     name: Docker - Backend Build
@@ -134,3 +142,11 @@ jobs:
 
       - name: Build backend Docker image
         run: docker build -t user-management-backend:ci ./backend
+
+      - name: Scan backend Docker image with Trivy
+        uses: aquasecurity/trivy-action@0.33.1
+        with:
+          image-ref: user-management-backend:ci
+          format: table
+          severity: HIGH,CRITICAL
+          exit-code: '0'
