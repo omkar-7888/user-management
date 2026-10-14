@@ -1,5 +1,5 @@
 #using base image as node:20
-FROM node:20-alpine As builder
+FROM node:22-alpine AS builder
 
 #setting working directory as /app
 WORKDIR /app
@@ -8,7 +8,7 @@ WORKDIR /app
 COPY package*.json ./
 
 #install all the dependencies
-RUN npm install
+RUN npm ci
 
 #copy all the application files in working directory
 COPY . .
@@ -20,7 +20,7 @@ RUN npm run build
 #++++++++++++++++++++++++++
 #STAGE 2: Serve the Static Files
 #++++++++++++++++++++++++++
-FROM node:20-alpine
+FROM node:22-alpine
 
 WORKDIR /app
 
