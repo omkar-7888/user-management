@@ -38,5 +38,10 @@
         "tsx": "4.20.5",
         "typescript": "7.0.2",
         "vitest": "4.1.11"
-    }
+    },
+    
+    "overrides": {
+    "proxy-addr": "2.0.8",
+    "fast-uri": "3.1.7"
+}
 }

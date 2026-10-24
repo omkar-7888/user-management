@@ -27,7 +27,7 @@ services:
     container_name: userm_backend
     restart: always
     environment:
-      port: ${BACKEND_CONTAINER_PORT}
+      PORT: ${BACKEND_CONTAINER_PORT}
       DATABASE_URL: "postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}?sslmode=disable"
       CORS_ORIGIN: ${CORS_ORIGIN}
     
@@ -44,7 +44,6 @@ services:
       dockerfile: Dockerfile
       args:
         - VITE_API_URL=${VITE_API_URL}
-    user: "node"
 
     container_name: userm_frontend
     restart: always

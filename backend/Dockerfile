@@ -25,7 +25,7 @@ RUN npm run build
 RUN ls -la /app
 
 #Remove development dependencies
-RUN npm prune --production
+RUN npm prune --omit=dev
 
 # ===================================================
 # Stage 2: Final Production Runtime

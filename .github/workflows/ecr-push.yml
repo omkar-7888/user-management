@@ -1,0 +1,54 @@
+name: Push DOcker Image to ECR
+
+on:
+  workflow_run:
+    workflows: ["User Management CI"]
+    types: [completed]
+    branches: [main]
+
+jobs:
+  push-images:
+    if: ${{ github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_repository.full_name == 'omkar-7888/user-management' && github.event.workflow_run.head_branch == 'main' }}
+    runs-on: ubuntu-latest
+    permissions: 
+      contents: read
+      id-token: write
+
+    steps:
+      - name: Checkout CI tested-code
+        uses: actions/checkout@v4
+        with: 
+          ref: ${{ github.event.workflow_run.head_sha }} 
+          persist-credentials: false
+      
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::898732117236:role/github-actions-ecr-push-role
+          aws-region: us-west-2
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build Frontend Docker Image
+        run: |
+          docker build \
+            -t ${{ steps.login-ecr.outputs.registry }}/user-management-frontend:${{ github.event.workflow_run.head_sha }} \
+            ./frontend
+
+      - name: Push Frontend Docker Image
+        run: |
+          docker push \
+            ${{ steps.login-ecr.outputs.registry }}/user-management-frontend:${{ github.event.workflow_run.head_sha }}
+
+      - name: Build Backend Docker Image
+        run: |
+          docker build \
+            -t ${{ steps.login-ecr.outputs.registry }}/user-management-backend:${{ github.event.workflow_run.head_sha }} \
+            ./backend
+
+      - name: Push Backend Docker Image
+        run: |
+          docker push \
+            ${{ steps.login-ecr.outputs.registry }}/user-management-backend:${{ github.event.workflow_run.head_sha }}
