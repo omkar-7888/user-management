@@ -63,3 +63,5 @@ jobs:
         run: |
           docker push \
             ${{ steps.login-ecr.outputs.registry }}/user-management-backend:${{ github.event.workflow_run.head_sha }}
+
+# End-to-end automatic ECR push verification test
